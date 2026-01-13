@@ -87,7 +87,8 @@ DATABASES = {
 AUTH_USER_MODEL = "accounts.User"
 
 AUTHENTICATION_BACKENDS = [
-    'accounts.backends.EmailBackend',  # ⭐ MOST IMPORTANT FIX
+    'django.contrib.auth.backends.ModelBackend',
+    'accounts.backends.EmailBackend', 
 ]
 
 # -------------------------
@@ -130,3 +131,8 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
+
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+

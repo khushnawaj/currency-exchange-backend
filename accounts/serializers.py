@@ -52,3 +52,7 @@ class SignupSerializer(serializers.ModelSerializer):
         user.full_name = validated_data["full_name"]
         user.save()
         return user
+class ProfilePhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("profile_photo",)
