@@ -1,183 +1,182 @@
-# 💱 Currency Exchange & Wallet System (Backend)
+# CurrencyXchange - Multi-Currency Wallet & Exchange Platform
 
-A **Django REST API backend** for a multi-currency wallet system that supports user authentication, wallet management, currency conversion, and secure user-to-user money transfers.
+A full-stack web application for managing multi-currency wallets, performing currency exchanges, and secure money transfers between users.
 
----
+## 🌟 Features
 
-## 🚀 Features
+### Core Functionality
+- **User Authentication**: Secure signup/login with JWT tokens
+- **Multi-Currency Wallets**: Create and manage wallets in different currencies
+- **Live Currency Rates**: Real-time exchange rates from external APIs
+- **Currency Conversion**: Convert between currencies with live rates
+- **Money Transfers**: Send money to other users with automatic conversion
+- **Wallet Top-up**: Simulated top-up functionality
+- **Transaction History**: Complete transaction tracking and export
+- **Analytics Dashboard**: Financial overview and insights
+- **Favorite Currencies**: Mark and manage preferred currencies
+- **Profile Management**: User profiles with photo upload
 
-- User Signup & Login (JWT Authentication)
-- Email-based Custom User Model
-- Multi-currency Wallet System
-- Wallet Top-up API (Simulated)
-- Currency Management with Logos
-- Currency Conversion API
-- Send Money (Cross-currency transfers)
-- Transaction History
-- Profile Photo Upload
-- Admin Panel for Management
+### Technical Features
+- **Responsive Design**: Mobile-first approach with modern UI
+- **Real-time Updates**: Live currency rate updates
+- **Export Functionality**: CSV export for transactions
+- **Admin Panel**: Django admin for system management
+- **API Documentation**: Postman collection included
 
----
+## 🏗️ Architecture
 
-## 🛠 Tech Stack
+### Backend (Django REST Framework)
+- **Framework**: Django 5.1.4 with DRF
+- **Authentication**: JWT with custom email backend
+- **Database**: SQLite (development) / PostgreSQL (production)
+- **External APIs**: ExchangeRate-API for live rates
+- **File Storage**: Local media storage (configurable for cloud)
 
-- Python 3
-- Django
-- Django REST Framework
-- PostgreSQL
-- JWT Authentication
-- Pillow (Image Handling)
+### Frontend (React + Vite)
+- **Framework**: React 19 with Vite
+- **Routing**: React Router for SPA navigation
+- **State Management**: React hooks and context
+- **UI Components**: Custom CSS with responsive design
+- **Icons**: React Icons library
+- **Notifications**: React Hot Toast
 
----
+## 🚀 Quick Start
 
-## ⚙️ Setup Instructions
+### Prerequisites
+- Python 3.8+
+- Node.js 16+
+- Git
 
-### 1️⃣ Clone the Repository
-```bash
-git clone https://github.com/<your-username>/<repo-name>.git
-cd <repo-name>
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd currency_exchange
+   ```
+
+2. **Backend Setup**
+   ```bash
+   cd backend
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   cp .env.example .env
+   # Edit .env with your settings
+   python manage.py migrate
+   python manage.py createsuperuser
+   python manage.py update_rates  # Fetch live currency rates
+   python manage.py runserver
+   ```
+
+3. **Frontend Setup** (in a new terminal)
+   ```bash
+   cd currency-frontend
+   npm install
+   npm run dev
+   ```
+
+4. **Access the Application**
+   - Frontend: http://localhost:5174
+   - Backend API: http://localhost:8000
+   - Admin Panel: http://localhost:8000/admin
+
+## 📁 Project Structure
+
+```
+currency_exchange/
+├── backend/                 # Django REST API
+│   ├── accounts/           # User authentication & profiles
+│   ├── currency/           # Currency management & rates
+│   ├── wallet/             # Wallet operations
+│   ├── transactions/       # Transaction handling
+│   ├── config/             # Django settings
+│   └── manage.py
+├── currency-frontend/       # React SPA
+│   ├── src/
+│   │   ├── pages/          # Main application pages
+│   │   ├── components/     # Reusable components
+│   │   ├── api/            # API configuration
+│   │   └── utils/          # Utility functions
+│   └── public/
+├── .gitignore
+├── README.md
+└── CurrencyXchange.postman_collection.json
 ```
 
----
+## 🔧 Configuration
 
-### 2️⃣ Create & Activate Virtual Environment
-```bash
-python -m venv venv
-```
-
-**Activate**
-```bash
-# Windows
-venv\Scripts\activate
-
-# Linux / Mac
-source venv/bin/activate
-```
-
----
-
-### 3️⃣ Install Dependencies
-```bash
-pip install -r requirements.txt
-```
-
----
-
-### 4️⃣ Environment Variables
-
-Create a `.env` file in the root directory and add:
-
+### Environment Variables (.env)
 ```env
-SECRET_KEY=your_secret_key
+SECRET_KEY=your-secret-key
 DEBUG=True
-
-DB_NAME=currency_db
-DB_USER=postgres
-DB_PASSWORD=your_password
-DB_HOST=localhost
-DB_PORT=5432
+DATABASE_URL=sqlite:///db.sqlite3
+EXCHANGE_RATE_API_KEY=your-api-key
 ```
 
----
+### API Endpoints
 
-### 5️⃣ Database Migrations
-```bash
-python manage.py makemigrations
-python manage.py migrate
-```
+#### Authentication
+- `POST /api/auth/signup/` - User registration
+- `POST /api/auth/login/` - User login
+- `POST /api/auth/logout/` - User logout
 
----
+#### Wallets
+- `GET /api/wallets/` - List user wallets
+- `POST /api/wallets/` - Create new wallet
+- `POST /api/wallets/topup/` - Top up wallet
 
-### 6️⃣ Create Superuser
-```bash
-python manage.py createsuperuser
-```
+#### Transactions
+- `GET /api/transactions/` - List transactions
+- `POST /api/send-money/` - Send money to user
+- `GET /api/transactions/export/` - Export transactions
 
----
-
-### 7️⃣ Run Development Server
-```bash
-python manage.py runserver
-```
-
-Server will start at:
-```
-http://127.0.0.1:8000/
-```
-
----
-
-## 🔐 Authentication Flow
-
-### Signup
-```
-POST /api/signup/
-```
-
-### Login
-```
-POST /api/login/
-```
-
-Use JWT access token in headers:
-```
-Authorization: Bearer <access_token>
-```
-
----
-
-## 📡 API Endpoints (Summary)
-
-### 🔑 Authentication
-- `POST /api/signup/`
-- `POST /api/login/`
-
-### 💼 Wallet
-- `GET /api/wallets/`
-- `POST /api/wallets/`
-- `POST /api/wallets/topup/`
-
-### 💱 Currency
-- `GET /api/currencies/`
-- `POST /api/convert/`
-
-### 🔁 Transfer
-- `POST /api/send-money/`
-
-### 📜 Transactions
-- `GET /api/transactions/`
-
-### 👤 Profile
-- `PATCH /api/profile-photo/`
-
----
+#### Currencies
+- `GET /api/currencies/` - List available currencies
+- `POST /api/convert/` - Convert currency amounts
 
 ## 🧪 Testing
 
-- APIs tested using **Postman**
-- Admin panel available at:
+### Backend Tests
+```bash
+cd backend
+python manage.py test
 ```
-/admin/
+
+### API Testing
+Import `CurrencyXchange.postman_collection.json` into Postman for comprehensive API testing.
+
+## 🚢 Deployment
+
+### Backend Deployment
+1. Set `DEBUG=False` in settings
+2. Configure production database
+3. Set up static/media file serving
+4. Use production WSGI server (gunicorn)
+
+### Frontend Deployment
+```bash
+cd currency-frontend
+npm run build
+# Deploy dist/ folder to your hosting service
 ```
 
----
+## 🤝 Contributing
 
-## 📌 Notes
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
 
-- Payment gateway is **simulated** (top-up API)
-- Media handling is for **development only**
-- Project can be extended with:
-  - React frontend
-  - Real payment gateway integration
-  - Cloud deployment (AWS / Render / Railway)
+## 📝 License
 
----
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 👤 Author
+## 🙋 Support
 
-**Khushnawaj**  
-Full Stack Developer  
-Django | REST APIs | PostgreSQL | React/Vue
+For questions or issues, please open an issue on GitHub or contact the development team.
 
 ---
 
+**Built with ❤️ using Django & React**
