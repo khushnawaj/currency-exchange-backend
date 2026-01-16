@@ -148,17 +148,85 @@ Import `CurrencyXchange.postman_collection.json` into Postman for comprehensive 
 
 ## 🚢 Deployment
 
-### Backend Deployment
-1. Set `DEBUG=False` in settings
-2. Configure production database
-3. Set up static/media file serving
-4. Use production WSGI server (gunicorn)
+### Option 1: Vercel (Frontend) + Render (Backend) - Recommended
 
-### Frontend Deployment
-```bash
-cd currency-frontend
-npm run build
-# Deploy dist/ folder to your hosting service
+#### Backend Deployment on Render
+1. **Create Render Account**: Sign up at [render.com](https://render.com)
+2. **Connect GitHub**: Link your GitHub repository
+3. **Create PostgreSQL Database**:
+   - Go to Render Dashboard → New → PostgreSQL
+   - Create database and copy the connection string
+4. **Deploy Django Backend**:
+   - New → Web Service → Connect your repo
+   - Set build command: `pip install -r requirements.txt`
+   - Set start command: `gunicorn config.wsgi:application --bind 0.0.0.0:$PORT`
+   - Add environment variables:
+     - `DATABASE_URL`: Your PostgreSQL connection string
+     - `SECRET_KEY`: Generate a secure secret key
+     - `DEBUG`: False
+     - `EXCHANGE_RATE_API_KEY`: Your API key from exchangerate-api.com
+     - `DJANGO_SETTINGS_MODULE`: config.settings
+
+#### Frontend Deployment on Vercel
+1. **Create Vercel Account**: Sign up at [vercel.com](https://vercel.com)
+2. **Connect GitHub**: Import your repository
+3. **Configure Build Settings**:
+   - Root Directory: `currency-frontend`
+   - Build Command: `npm run build`
+   - Output Directory: `dist`
+4. **Add Environment Variables**:
+   - `VITE_API_BASE_URL`: Your Render backend URL + `/api`
+
+#### Update CORS Settings
+After deployment, update your backend's `config/settings.py`:
+```python
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # Development
+    "https://your-frontend.vercel.app",  # Production frontend
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",  # Development
+    "https://your-frontend.vercel.app",  # Production frontend
+]
+```
+
+### Option 2: Render Only (Both Services)
+
+#### Deploy Backend
+Follow the same steps as above for the backend.
+
+#### Deploy Frontend on Render
+1. **Create Static Site**:
+   - New → Static Site → Connect your repo
+   - Root Directory: `currency-frontend`
+   - Build Command: `npm run build`
+   - Publish Directory: `dist`
+2. **Add Environment Variables**:
+   - `VITE_API_BASE_URL`: Your Render backend URL + `/api`
+
+### Post-Deployment Steps
+1. **Update Currency Rates**: Run the management command on your deployed backend
+2. **Create Superuser**: Use Render's shell to run `python manage.py createsuperuser`
+3. **Test the Application**: Verify all features work in production
+4. **Set up Monitoring**: Consider adding error tracking (Sentry) and analytics
+
+## 🔧 Configuration
+
+### Environment Variables
+
+#### Backend (.env)
+```env
+SECRET_KEY=your-production-secret-key
+DEBUG=False
+DATABASE_URL=postgresql://user:password@host:port/database
+EXCHANGE_RATE_API_KEY=your-api-key
+DJANGO_SETTINGS_MODULE=config.settings
+```
+
+#### Frontend (.env)
+```env
+VITE_API_BASE_URL=https://your-backend.onrender.com/api
 ```
 
 ## 🤝 Contributing
