@@ -6,7 +6,8 @@ import TopUp from "./pages/TopUp";
 import SendMoney from "./pages/SendMoney";
 import Transactions from "./pages/Transactions";
 import Profile from "./pages/Profile";
-import Dashboard from "./pages/Dashboard";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { isAuthenticated } from "./utils/auth";
@@ -73,6 +74,15 @@ function App() {
               <ProtectedRoute>
                 <Profile />
               </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin"
+            element={
+              <AdminProtectedRoute>
+                <AdminDashboard />
+              </AdminProtectedRoute>
             }
           />
 

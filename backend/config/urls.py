@@ -18,6 +18,7 @@ urlpatterns = [
     path('api/', include('wallet.urls')),
     path('api/', include('currency.urls')),
     path('api/', include('transactions.urls')),
+    path('api/admin-ui/', include('admin_api.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

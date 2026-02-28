@@ -8,7 +8,9 @@ import {
   FiList,
   FiPlusCircle,
   FiUser,
+  FiShield,
 } from "react-icons/fi";
+import { isAdmin } from "../utils/auth";
 
 function Navbar() {
   const location = useLocation();
@@ -104,6 +106,11 @@ function Navbar() {
               <Link to="/profile" onClick={() => setDropdownOpen(false)}>
                 <FiUser /> Profile
               </Link>
+              {isAdmin() && (
+                <Link to="/admin" onClick={() => setDropdownOpen(false)}>
+                  <FiShield /> Admin Panel
+                </Link>
+              )}
               <button onClick={logout}>
                 <FiLogOut /> Logout
               </button>

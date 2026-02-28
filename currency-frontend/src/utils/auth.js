@@ -6,6 +6,8 @@ export const saveTokens = (access, refresh) => {
 export const saveUser = (user) => {
   localStorage.setItem("full_name", user.full_name);
   localStorage.setItem("email", user.email);
+  localStorage.setItem("isStaff", user.is_staff ? "true" : "false");
+  localStorage.setItem("isSuperuser", user.is_superuser ? "true" : "false");
 };
 
 export const logout = () => {
@@ -15,4 +17,8 @@ export const logout = () => {
 
 export const isAuthenticated = () => {
   return !!localStorage.getItem("accessToken");
+};
+
+export const isAdmin = () => {
+  return localStorage.getItem("isStaff") === "true";
 };

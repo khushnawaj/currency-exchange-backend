@@ -28,7 +28,9 @@ def login(request):
             "refresh": str(refresh),
             "user": {
                 "email": user.email,
-                "full_name": user.full_name
+                "full_name": user.full_name,
+                "is_staff": user.is_staff,
+                "is_superuser": user.is_superuser
             }
         }, status=status.HTTP_200_OK)
 
@@ -53,7 +55,9 @@ def signup(request):
             "refresh": str(refresh),
             "user": {
                 "email": user.email,
-                "full_name": user.full_name
+                "full_name": user.full_name,
+                "is_staff": user.is_staff,
+                "is_superuser": user.is_superuser
             }
         }, status=status.HTTP_201_CREATED)
     
