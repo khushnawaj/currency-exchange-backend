@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: currency-backend
+    env: python
+    # This must match where your requirements.txt is
+    rootDir: backend
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate"
+    # This must match where wsgi.py is
+    startCommand: "gunicorn config.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.0 # Or your version
+      - key: DEBUG
+        value: "False"
